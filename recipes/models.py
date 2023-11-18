@@ -24,7 +24,7 @@ class Recipe(models.Model):
     # Gera uma data de acordo com alteração
     updated_at = models.DateField(auto_now=True)
     is_published = models.BooleanField(default=False)
-    cover = models.ImageField(upload_to='recipes/cover/%Y/%m/%d/')
+    cover = models.ImageField(upload_to='recipes/cover/%Y/%m/%d/', blank=True, default='')
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True
     )
