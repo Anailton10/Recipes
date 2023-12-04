@@ -1,10 +1,10 @@
 from django.urls import resolve, reverse
 from recipes import views
 
-from .test_recipe_base import Recipe, RecipeTestBase
+from .test_recipe_base import RecipeTestBase
 
 
-class RecipeViewsTest(RecipeTestBase):
+class RecipeViewsHomeTest(RecipeTestBase):
     def test_recipe_home_view_function_is_correct(self):
         view = resolve(reverse('recipes-home'))
         self.assertIs(view.func, views.home)
@@ -35,7 +35,10 @@ class RecipeViewsTest(RecipeTestBase):
         # Check if one recipe exists
         self.assertIn('Recipe Title', content)
         self.assertEqual(len(response_context_recipes), 1)
+        ...
 
+
+class RecipeViewsCategoryTest(RecipeTestBase):
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(
             reverse('recipes-category', kwargs={'category_id': 1000})
@@ -48,6 +51,20 @@ class RecipeViewsTest(RecipeTestBase):
         )
         self.assertEqual(response.status_code, 404)
 
+    def test_recipe_category_loads_template_recipes(self):
+        # Need a recipe for this test
+        title_category = 'this category test'
+        self.make_recipe(title=title_category)
+
+        response = self.client.get(reverse('recipes-category', args=(1,)))
+        content = response.content.decode('utf-8')
+
+        # Check if one recipe exists
+        self.assertIn(title_category, content)
+        ...
+
+
+class RecipeViewsDetailTest(RecipeTestBase):
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(
             reverse('recipes-recipe', kwargs={'id': 1})
@@ -59,3 +76,18 @@ class RecipeViewsTest(RecipeTestBase):
             reverse('recipes-recipe', kwargs={'id': 1000})
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_detail_loads_template_the_correct_recipes(self):
+        # Need a recipe for this test
+        title_detail = 'this detail page and load one recipe'
+        self.make_recipe(title=title_detail)
+
+        response = self.client.get(reverse('recipes-recipe',
+                                           kwargs={
+                                               'id': 1
+                                           }))
+        content = response.content.decode('utf-8')
+
+        # Check if one recipe exists
+        self.assertIn(title_detail, content)
+        ...
