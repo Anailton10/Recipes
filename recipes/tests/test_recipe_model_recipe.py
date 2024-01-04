@@ -11,16 +11,16 @@ class RecipeModelTest(RecipeTestBase):
 
     def make_recipe_no_default(self):
         recipe = Recipe(
-            category=self.make_category(name='category test default'),
+            category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
             title='Recipe Title',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug='recipe-slug-for-no-defaluts',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
             servings_unit='Porções',
-            preparation_steps='Recipe Preparation Steps'
+            preparation_steps='Recipe Preparation Steps',
         )
         recipe.full_clean()
         recipe.save()
