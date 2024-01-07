@@ -1,5 +1,6 @@
 
 import math
+from django.core.paginator import Paginator
 
 
 def make_pagination_range(page_range, qty_pages, current_page):  # noqa: E501
@@ -31,3 +32,21 @@ def make_pagination_range(page_range, qty_pages, current_page):  # noqa: E501
         'last_page_out_range': stop_range < total_page
 
     }
+
+
+def make_pagination(request, queryset, per_page, qty_page=4):
+    try:
+        current_page = int(request.GET.get('page', 1))
+    except ValueError:
+        current_page = 1
+
+    paginator = Paginator(queryset, per_page)
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        paginator.page_range,
+        qty_page,
+        current_page
+    )
+
+    return page_obj, pagination_range
