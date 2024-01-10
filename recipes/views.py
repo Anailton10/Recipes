@@ -1,20 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.db.models import Q
-<<<<<<< HEAD
 from utils.pagination import make_pagination
 
 from .models import Recipe
-
 import os
 
 PER_PAGE = int(os.environ.get("PER_PAGE", 6))
-=======
-from django.core.paginator import Paginator
-from utils.pagination import make_pagination_range, make_pagination
+
 
 PER_PAGE = 9
->>>>>>> ec50fdbaca4b6e5fc02be47d76660ea9379013d2
 
 
 def home(request):
